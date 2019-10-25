@@ -1,0 +1,22 @@
+#!/usr/bin/python
+
+import os.path
+import serial
+import sys
+
+if __name__ == '__main__':
+
+	if len(sys.argv) != 2:
+ 		print "usage: ", os.path.basename(sys.argv[0]), "[USB port]"
+
+	comport = sys.argv[1]
+	ser = serial.Serial()
+
+	ser = serial.Serial(sys.argv[1], 9600, timeout = 2.0)
+	ser.write('++mode 1\n')
+	ser.write('++auto 1\n')
+	ser.close()
+	f = open("cfg","w")
+	f.write(comport)
+	f.close	
+
