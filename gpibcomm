@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import os.path
+from os import path
 import serial
 import sys
 
@@ -8,9 +9,17 @@ if __name__ == '__main__':
 	if len(sys.argv) == 3:
 		addr = sys.argv[1]
 		cmd = sys.argv[2]
-
+	else:
+		print("Usage: gpibcomm [address] [\"command\"]")
+		return false
 	ser = serial.Serial()
-	f = open("cfg", "r")
+	try: 
+		path.exists("cfg")
+	except:
+		print("Run gpib setup first and provide a tty port where the gpib adapter is connected.")
+		return false
+	else:
+		f = open("cfg", "r")
 	commport = f.read()
 	f.close
 	#print("using " + commport)
@@ -22,3 +31,4 @@ if __name__ == '__main__':
 		input = ser.read(256)
 		print input,
 	ser.close()
+
