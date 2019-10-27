@@ -5,30 +5,34 @@ import serial
 import sys
 
 if __name__ == '__main__':
-	
-	if len(sys.argv) == 3:
-		addr = sys.argv[1]
-		cmd = sys.argv[2]
-	else:
-		print("Usage: gpibcomm [address] [\"command\"]")
-		return false
-	ser = serial.Serial()
-	try: 
-		path.exists("cfg")
-	except:
-		print("Run gpib setup first and provide a tty port where the gpib adapter is connected.")
-		return false
-	else:
-		f = open("cfg", "r")
-	commport = f.read()
-	f.close
-	#print("using " + commport)
-	ser = serial.Serial(commport, 9600, timeout=2.0)
-	ser.write('++addr ' + addr + '\n')
-	ser.write(cmd + '\r\n')
-	#print("Sending " + cmd)
-	if "?" in cmd:
-		input = ser.read(256)
-		print input,
-	ser.close()
+
+        if len(sys.argv) == 3:
+                addr = sys.argv[1]
+                cmd = sys.argv[2]
+        else:
+                print("Usage: gpibcomm [address] [\"command\"]")
+                quit()
+        ser = serial.Serial()
+        try:
+                path.exists("cfg")
+        except:
+                print("Run gpib setup first and provide a tty port where the gpib adapter is connected.")
+                quit()
+        else:
+                f = open("cfg", "r")
+        commport = f.read()
+        f.close
+        #print("using " + commport)
+        ser = serial.Serial(commport, 9600, timeout=2.0)
+        ser.write('++addr ' + addr + '\n')
+        if "?" in cmd:
+                ser.write('++auto 1\n')
+                ser.write(cmd + '\r\n')
+                input = ser.read(256)
+                print input,
+        else:
+                ser.write('++auto 0\n')
+                ser.write(cmd + '\r\n')
+        ser.close()
+
 
