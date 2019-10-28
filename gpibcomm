@@ -25,6 +25,7 @@ if __name__ == '__main__':
         #print("using " + commport)
         ser = serial.Serial(commport, 9600, timeout=2.0)
         ser.write('++addr ' + addr + '\n')
+        ser.write('++eoi\n')
         if "?" in cmd:
                 ser.write('++auto 1\n')
                 ser.write(cmd + '\r\n')
